@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Backend Engineer Roadmap (job-ready edition)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --fg:#111111; --muted:#555; --line:#1a1a1a;
+  --group:#ffdd33; --topic:#fff2b3; --topic-hover:#ffe680;
+  --done:#d7d7d7; --done-fg:#666;
+  --par:#bfe3ff; --par-topic:#e3f3ff;
+  --mile:#1a1a1a; --mile-fg:#fff;
+  --deep:#7c3aed; --work:#15803d; --aware:#8a8a8a;
+  --panel:#ffffff; --shade:rgba(0,0,0,.35);
+  --chip:#f2f2f2; --link:#1d4ed8;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121212; --fg:#f1f1f1; --muted:#b0b0b0; --line:#e6e6e6;
+    --group:#e5b800; --topic:#3a3320; --topic-hover:#4a4126;
+    --done:#2c2c2c; --done-fg:#8d8d8d;
+    --par:#1e4a6b; --par-topic:#1a2f40;
+    --mile:#f1f1f1; --mile-fg:#121212;
+    --deep:#a78bfa; --work:#4ade80; --aware:#9a9a9a;
+    --panel:#1b1b1b; --shade:rgba(0,0,0,.6);
+    --chip:#2a2a2a; --link:#93c5fd;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121212; --fg:#f1f1f1; --muted:#b0b0b0; --line:#e6e6e6;
+  --group:#e5b800; --topic:#3a3320; --topic-hover:#4a4126;
+  --done:#2c2c2c; --done-fg:#8d8d8d;
+  --par:#1e4a6b; --par-topic:#1a2f40;
+  --mile:#f1f1f1; --mile-fg:#121212;
+  --deep:#a78bfa; --work:#4ade80; --aware:#9a9a9a;
+  --panel:#1b1b1b; --shade:rgba(0,0,0,.6);
+  --chip:#2a2a2a; --link:#93c5fd;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+.hand{font-family:"Balsamiq Sans","Comic Sans MS","Chalkboard SE",system-ui,sans-serif}
+a{color:var(--link)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--deep);outline-offset:2px}
+
+header{max-width:900px;margin:0 auto;padding:40px 20px 8px;text-align:center}
+header h1{font-family:"Balsamiq Sans",system-ui,sans-serif;font-size:clamp(2rem,5vw,3rem);line-height:1.1;margin:0 0 12px}
+header p{margin:0 auto 6px;max-width:62ch;color:var(--muted)}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:center;margin:20px auto 0;max-width:900px;padding:0 20px;font-size:.95rem}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;border:2px solid currentColor}
+.d-deep .dot,.legend .deep .dot{background:var(--deep);border-color:var(--deep)}
+.d-work .dot,.legend .work .dot{background:linear-gradient(90deg,var(--work) 50%,transparent 50%);border-color:var(--work)}
+.d-aware .dot,.legend .aware .dot{background:transparent;border-color:var(--aware)}
+
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:2px solid var(--line);margin-top:22px}
+.progress-inner{max-width:900px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;font-size:.95rem}
+.bar{flex:1;height:12px;border:2px solid var(--line);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--work);transition:width .3s}
+.reset{background:none;border:2px solid var(--line);border-radius:6px;padding:2px 10px;cursor:pointer;font-size:.85rem}
+
+main{max-width:1100px;margin:0 auto;padding:30px 16px 60px}
+.row{position:relative;display:grid;grid-template-columns:1fr minmax(190px,250px) 1fr;column-gap:34px;align-items:center;padding:26px 0}
+.row::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:3px solid var(--line);transform:translateX(-1.5px);z-index:0}
+.row.first::before{top:50%}
+.row.last::before{bottom:50%}
+.gbox{position:relative;z-index:1;background:var(--group);border:3px solid var(--line);border-radius:8px;padding:12px 14px;text-align:center}
+.gbox h2{font-family:"Balsamiq Sans",system-ui,sans-serif;margin:0;font-size:1.2rem;line-height:1.2}
+.gbox .when{display:block;font-size:.85rem;margin-top:4px;opacity:.85}
+.gbox .gnote{display:block;font-size:.8rem;margin-top:6px;line-height:1.35}
+.gbox.has-l::before,.gbox.has-r::after{content:"";position:absolute;top:50%;width:34px;border-top:2px dashed var(--line)}
+.gbox.has-l::before{right:100%}
+.gbox.has-r::after{left:100%}
+.cluster{position:relative;z-index:1;display:flex;flex-direction:column;gap:9px}
+.cluster.left{align-items:stretch}
+.par .gbox{background:var(--par)}
+.par .node{background:var(--par-topic)}
+
+.node{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--topic);border:2px solid var(--line);border-radius:6px;padding:8px 10px;cursor:pointer;font-family:"Balsamiq Sans",system-ui,sans-serif;font-size:.98rem;line-height:1.25}
+.node:hover{background:var(--topic-hover)}
+.node .t{flex:1}
+.node .chk{width:20px;height:20px;border:2px solid var(--line);border-radius:4px;flex:none;display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.node.is-done{background:var(--done);color:var(--done-fg)}
+.node.is-done .t{text-decoration:line-through}
+.node.is-done .chk{background:var(--work);border-color:var(--work);color:#fff}
+
+.milestone{position:relative;z-index:1;grid-column:1 / -1;justify-self:center;width:min(620px,100%);background:var(--mile);color:var(--mile-fg);border-radius:10px;padding:18px 20px}
+.milestone h2{font-family:"Balsamiq Sans",system-ui,sans-serif;margin:0 0 6px;font-size:1.25rem}
+.milestone p{margin:0 0 8px}
+.milestone ul{margin:0;padding-left:20px}
+.milestone li{margin:3px 0}
+
+.skip{max-width:760px;margin:30px auto 0;border:3px dashed var(--line);border-radius:10px;padding:18px 22px}
+.skip h2{font-family:"Balsamiq Sans",system-ui,sans-serif;margin:0 0 6px}
+.skip p{margin:0 0 10px;color:var(--muted)}
+.skip ul{margin:0;padding-left:20px}
+.skip li{margin:4px 0}
+
+/* panel */
+.shade{position:fixed;inset:0;background:var(--shade);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.shade.open{opacity:1;pointer-events:auto}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:var(--panel);border-left:3px solid var(--line);z-index:21;transform:translateX(102%);transition:transform .22s ease;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+aside.open{transform:none}
+.ph{display:flex;align-items:flex-start;gap:10px;padding:18px 20px 12px;border-bottom:2px solid var(--line)}
+.ph h3{font-family:"Balsamiq Sans",system-ui,sans-serif;margin:0;font-size:1.4rem;line-height:1.2;flex:1}
+.close{background:none;border:2px solid var(--line);border-radius:6px;width:34px;height:34px;cursor:pointer;font-size:1.1rem;line-height:1}
+.pb{overflow-y:auto;padding:14px 20px 24px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.badge{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.85rem}
+.pb h4{margin:16px 0 4px;font-size:1rem}
+.pb p{margin:0}
+.done-box{margin-top:10px;padding:10px 12px;border-left:4px solid var(--work);background:var(--chip);border-radius:4px}
+.src{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.src li{border:2px solid var(--line);border-radius:8px;padding:10px 12px}
+.src li.top{border-color:var(--deep);border-width:3px}
+.src a{font-weight:700}
+.src .k{display:inline-block;font-size:.78rem;background:var(--chip);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.src .pick{display:inline-block;font-size:.78rem;color:#fff;background:var(--deep);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.src .w{display:block;font-size:.92rem;color:var(--muted);margin-top:3px}
+.mark{margin-top:18px;width:100%;padding:10px;border:3px solid var(--line);background:var(--group);color:#111;border-radius:8px;cursor:pointer;font-family:"Balsamiq Sans",system-ui,sans-serif;font-size:1rem}
+.mark.on{background:var(--work);color:#fff;border-color:var(--work)}
+
+@media (max-width: 760px){
+  .row{grid-template-columns:1fr;row-gap:12px;padding:18px 0 18px 26px}
+  .row::before{left:10px;transform:none}
+  .row.first::before{top:30px}
+  .row.last::before{bottom:auto;height:30px}
+  .gbox{order:-1;text-align:left}
+  .gbox.has-l::before,.gbox.has-r::after{display:none}
+  .gbox::before{content:"" !important;display:block !important;position:absolute;left:-18px !important;right:auto !important;top:50%;width:16px;border-top:3px solid var(--line)}
+  .cluster.right{margin-top:0}
+  .cluster.left:empty,.cluster.right:empty{display:none}
+  .milestone{justify-self:stretch}
+  aside{top:auto;left:0;width:100%;height:88vh;border-left:none;border-top:3px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(102%)}
+}
+@media (prefers-reduced-motion: reduce){
+  aside,.shade,.bar i{transition:none}
+}
+.covers{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.covers li{background:var(--chip);border:1.5px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.85rem}
+.steps{margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.steps li{padding-left:2px}
+.steps a{font-weight:700}
+.steps .w{display:block;font-size:.92rem;color:var(--muted);margin-top:2px}
+.steps .k,.src .k{display:inline-block;font-size:.75rem;background:var(--chip);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.ty{display:inline-block;font-size:.75rem;font-weight:700;border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:middle;color:#fff}
+.ty-watch{background:#c4302b}.ty-practice{background:var(--work)}.ty-read{background:#2563eb}
+.panel-note{font-size:.85rem;color:var(--muted);margin-top:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Backend Engineer Roadmap</h1>
+  <p>Everything you need to get hired as a backend engineer, and nothing you don't. Work top to bottom, keep the blue track running every week, and click any box to see everything it covers, a video-first learning path in order, and only the book chapters worth reading.</p>
+  <p>Paced for October 2026 to June 2027 alongside classes and part-time work.</p>
+</header>
+
+<div class="legend" aria-label="Depth legend">
+  <span class="deep"><span class="dot"></span>Go deep: build it, debug it, defend trade-offs</span>
+  <span class="work"><span class="dot"></span>Working knowledge: used it in a project</span>
+  <span class="aware"><span class="dot"></span>Awareness: know what it is and when to use it</span>
+</div>
+
+<div class="progress">
+  <div class="progress-inner">
+    <span id="pcount">0 of 0 done</span>
+    <div class="bar" aria-hidden="true"><i id="pbar"></i></div>
+    <button class="reset" id="reset" type="button">Reset</button>
+  </div>
+</div>
+
+<main id="map"></main>
+
+<section class="skip">
+  <h2>Deliberately left off</h2>
+  <p>These show up on the full roadmap.sh backend map, but you don't need them to land an entry-level backend job. Learn them on the job if your team uses them.</p>
+  <ul>
+    <li>A second backend language, until you've gone deep in one</li>
+    <li>Deep Kubernetes (Helm, operators, service meshes like Istio)</li>
+    <li>Terraform and infrastructure-as-code beyond reading a simple file</li>
+    <li>CQRS, event sourcing, and domain-driven design in depth</li>
+    <li>Every NoSQL family (graph, wide-column, time-series) beyond knowing they exist</li>
+    <li>Serverless architecture as its own topic, SOAP, and XML-based APIs</li>
+    <li>Search engines like Elasticsearch beyond a one-line "what it's for"</li>
+    <li>Frontend frameworks; basic HTML/JSON familiarity is enough</li>
+  </ul>
+</section>
+
+<div class="shade" id="shade"></div>
+<aside id="panel" aria-hidden="true" role="dialog" aria-labelledby="ptitle">
+  <div class="ph">
+    <h3 id="ptitle">Topic</h3>
+    <button class="close" id="close" type="button" aria-label="Close">✕</button>
+  </div>
+  <div class="pb" id="pbody"></div>
+</aside>
+
+<script>
+const Y=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q);
+// P(type, name, url, note, isSearch)
+const W=(n,u,note)=>({ty:"Watch",n,u,note,yt:true,search:u.includes("search_query")});
+const D=(n,u,note)=>({ty:"Practice",n,u,note});
+const R=(n,u,note)=>({ty:"Read",n,u,note});
+const B=(n,u,note)=>({n,u,note});
+const DDIA="https://dataintensive.net/";
+
+const DATA=[
+{kind:"par",title:"Interview prep track",when:"Every week, starting now",note:"Runs alongside everything below. Don't wait to finish the roadmap before applying.",topics:[
+ {id:"dsa",t:"DSA & LeetCode",d:"deep",why:"Almost every new-grad backend loop opens with one or two coding rounds. This is the single biggest filter.",
+  covers:["Big-O analysis","Arrays & hashing","Two pointers","Sliding window","Stack","Binary search","Linked lists","Trees","Tries","Heaps","Backtracking","Graphs (BFS, DFS, topological sort)","Intervals","Greedy","1-D and 2-D dynamic programming"],
+  done:"You can solve most mediums in about 30 minutes and explain the time and space complexity out loud.",
+  path:[W("NeetCode: Big-O notation",Y("NeetCode Big O notation"),"Start here so you can analyze every solution."),
+   D("NeetCode 150 roadmap","https://neetcode.io/roadmap","Do it in roadmap order; the 150 problems cover every pattern listed above. 5 to 8 a week."),
+   W("NeetCode channel","https://www.youtube.com/@NeetCode","Watch the explanation for each problem after you attempt it, not before.")],
+  refs:[B("Grokking Algorithms (2nd ed.)","https://www.manning.com/books/grokking-algorithms-second-edition","Only when a pattern won't click: the chapters on BFS, Dijkstra, and dynamic programming."),
+   B("Tech Interview Handbook: algorithms","https://www.techinterviewhandbook.org/","Per-topic cheat sheets of edge cases and techniques.")]},
+ {id:"resume",t:"Resume & applications",d:"deep",why:"Your projects only get you interviews if the resume shows them well.",
+  covers:["One-page format","Project bullets with metrics","ATS-friendly layout","Tailoring per role","Referrals and where to apply"],
+  done:"Every project bullet says what you built, with what, and the measurable result.",
+  path:[R("Tech Interview Handbook: resume","https://www.techinterviewhandbook.org/resume/","Covers everything above in one read, about 30 minutes."),
+   W("Software engineer resume tips",Y("software engineer new grad resume tips"),"Pick any recent video by an engineer or recruiter for examples of strong bullets.")],
+  refs:[B("Cracking the Coding Interview","https://www.crackingthecodinginterview.com/","Only the resume section of the Before the Interview chapter.")]},
+ {id:"behav",t:"Behavioral & project deep-dives",d:"work",why:"Interviewers will dig into your projects for 20+ minutes. Vague answers sink otherwise good candidates.",
+  covers:["STAR method","Tell me about yourself","Conflict and failure stories","Why this company","Project architecture walkthrough","Trade-offs and what you'd change"],
+  done:"You can talk through any project for 15 minutes without notes.",
+  path:[W("Dan Croitor: behavioral interviews",Y("Dan Croitor behavioral interview STAR"),"Clear framework and example answers."),
+   R("Tech Interview Handbook: behavioral","https://www.techinterviewhandbook.org/behavioral-interview/","Question bank to prepare against."),
+   D("Write your story bank","","Write 6 STAR stories and a 5-minute walkthrough of each project. Practice them out loud.")],
+  refs:[B("Cracking the Coding Interview","https://www.crackingthecodinginterview.com/","Only the Behavioral Questions chapter.")]}
+]},
+
+{kind:"group",title:"Foundations",when:"October",topics:[
+ {id:"net",t:"How the internet works: HTTP, DNS, TCP, TLS",d:"deep",why:"Backend work is answering HTTP requests. You need to know what's actually on the wire.",
+  covers:["What happens when you type a URL","HTTP methods, status codes, headers","Cookies","DNS resolution","IP, TCP vs UDP, ports","HTTPS and the TLS handshake","HTTP/1.1 vs HTTP/2 vs HTTP/3 (high level)"],
+  done:"You can explain the full request path from browser to server and back, and read a raw HTTP request.",
+  path:[W("ByteByteGo: What happens when you type a URL",Y("ByteByteGo what happens when you type a URL into your browser"),"The big picture in about 5 minutes."),
+   W("Traversy Media: HTTP Crash Course & Exploration",Y("Traversy Media HTTP Crash Course and Exploration"),"Methods, status codes, headers, and cookies."),
+   W("ByteByteGo: DNS, TCP vs UDP, HTTPS",Y("ByteByteGo how does DNS work"),"Watch their short DNS, TCP vs UDP, and HTTPS/TLS videos."),
+   W("ByteByteGo: HTTP/1 to HTTP/2 to HTTP/3",Y("ByteByteGo HTTP 1 HTTP 2 HTTP 3"),"The version differences in one video."),
+   D("Inspect real traffic","","Open your browser's Network tab and run curl -v against a few sites; read every header.")],
+  refs:[B("MDN: HTTP","https://developer.mozilla.org/en-US/docs/Web/HTTP","Look up any header or status code here."),
+   B("High Performance Browser Networking","https://hpbn.co/","Only ch. 2 (TCP), ch. 4 (TLS), and ch. 11 to 12 (HTTP/1.1, HTTP/2)."),
+   B("Cloudflare Learning Center","https://www.cloudflare.com/learning/","Short articles on DNS, TLS, and CDNs.")]},
+ {id:"linux",t:"Linux & the terminal",d:"work",why:"Servers run Linux, and you'll debug over SSH.",
+  covers:["Navigating and managing files","Permissions and ownership","Pipes, redirection, grep, find","Processes, signals, kill","Environment variables","SSH and keys","Package managers","Basic shell scripting"],
+  done:"You can SSH into a box, find a log line, check what's using a port, and kill a process.",
+  path:[W("MIT Missing Semester: lectures 1, 2, 4, 5",Y("Missing Semester MIT lecture shell"),"Shell, scripting, data wrangling (grep, pipes), and the command-line environment (processes, SSH, env vars)."),
+   D("OverTheWire: Bandit levels 0 to 20","https://overthewire.org/wargames/bandit/","Forces real use of SSH, permissions, find, grep, and pipes."),
+   W("freeCodeCamp: Introduction to Linux",Y("freeCodeCamp Introduction to Linux full course"),"Optional, for permissions, users, and package managers if any are still fuzzy.")],
+  refs:[B("The Missing Semester notes","https://missing.csail.mit.edu/","Written notes for each lecture."),
+   B("The Linux Command Line (free book)","https://linuxcommand.org/tlcl.php","Only ch. 1 to 11 (shell basics through processes and the environment).")]},
+ {id:"git",t:"Git & GitHub",d:"deep",why:"Every team uses it daily; messy Git is a visible red flag.",
+  covers:["init, clone, add, commit, status, log","diff and .gitignore","Branches and switching","Merging and resolving conflicts","Rebase and interactive rebase","Remotes: fetch, pull, push","Undoing: restore, reset, revert","Stash and cherry-pick","Pull requests and code review on GitHub","Good commit messages"],
+  done:"You can resolve a merge conflict, rebase a branch, undo a bad commit, and open a clean PR.",
+  path:[W("freeCodeCamp: Git and GitHub for Beginners","https://www.youtube.com/watch?v=RGOj5yH7evk","Commits, branches, merging, conflicts, remotes, and pull requests."),
+   D("Learn Git Branching","https://learngitbranching.js.org/","Do the Main and Remote tabs: covers rebase, interactive rebase, cherry-pick, and remotes."),
+   W("Git rebase vs merge",Y("git merge vs rebase explained"),"Any short explainer; pick one under 15 minutes."),
+   R("How to Write a Git Commit Message","https://cbea.ms/git-commit/","A 10-minute read with the seven rules teams follow.")],
+  refs:[B("Pro Git","https://git-scm.com/book/en/v2","Only sections 2.4 (undoing), 3.1 to 3.6 (branching, merging, rebasing), 7.3 (stash), and 6.2 (contributing on GitHub).")]},
+ {id:"os",t:"OS basics: processes, threads, memory",d:"work",why:"Explains why servers hang, leak memory, or have race conditions.",
+  covers:["Process vs thread","Context switching and scheduling (basic)","Race conditions","Mutexes and locks","Deadlocks","Virtual memory, stack vs heap"],
+  done:"You can explain a race condition and how a lock fixes it.",
+  path:[W("Core Dumped: processes and threads",Y("Core Dumped threads vs processes"),"Animated explanations of processes, threads, and context switches."),
+   W("Race conditions, mutexes, deadlocks",Y("race condition mutex deadlock explained"),"Pick one clear explainer that shows code."),
+   W("Stack vs heap memory",Y("Core Dumped stack vs heap"),"How memory is laid out for a running program.")],
+  refs:[B("Operating Systems: Three Easy Pieces","https://pages.cs.wisc.edu/~remzi/OSTEP/","Only ch. 4 (processes), 13 (address spaces), 26 to 28 (threads and locks), 32 (deadlock).")]}
+]},
+
+{kind:"group",title:"Language & framework",when:"October to November",note:"Pick ONE stack and stick with it. Only follow the steps for your stack.",topics:[
+ {id:"lang",t:"Core language (pick one)",d:"deep",why:"Interviewers expect fluency in one language, not familiarity with four.",
+  covers:["Types and variables","Control flow and functions","Collections (lists, maps, sets)","Classes, interfaces, OOP basics","Error handling and exceptions","Modules and imports","Standard library essentials","Generics (Java, Go, TS)"],
+  done:"You can write a 300-line program without looking up basic syntax.",
+  path:[W("Java: Bro Code Java Full Course",Y("Bro Code Java full course"),"Java. Covers everything listed, including OOP and generics."),
+   W("Python: Corey Schafer Python tutorials",Y("Corey Schafer Python tutorials for beginners"),"Python. Do the beginner playlist, then his OOP playlist."),
+   W("Go: freeCodeCamp Learn Go (Boot.dev)",Y("freeCodeCamp Learn Go Programming Golang Tutorial for Beginners"),"Go. Covers the whole language including generics and interfaces."),
+   W("TypeScript: Net Ninja TypeScript + Node",Y("Net Ninja TypeScript tutorial"),"TypeScript. Follow with his Node.js crash course."),
+   D("Exercism","https://exercism.org/tracks","Free practice problems with mentor feedback in every language above.")],
+  refs:[B("Java: Effective Java (Bloch)","https://www.oreilly.com/library/view/effective-java-3rd/9780134686097/","Only items in ch. 2 (creating objects), 4 (classes), and 10 (exceptions)."),
+   B("Python: Fluent Python (Ramalho)","https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/","Only ch. 2 to 3 (sequences, dicts) and ch. 5 (data classes) when you want depth."),
+   B("Go: Learning Go (Bodner)","https://www.oreilly.com/library/view/learning-go-2nd/9781098139285/","Only ch. 7 (types and interfaces), ch. 9 (errors), and ch. 8 (generics)."),
+   B("TypeScript Handbook","https://www.typescriptlang.org/docs/handbook/intro.html","Look up types, narrowing, and generics as you need them.")]},
+ {id:"fw",t:"Web framework",d:"deep",why:"This is what you'll build every project with.",
+  covers:["Routing and handlers","Request and response, JSON","Middleware","Dependency injection","Config and profiles","Validation","Connecting to a database","Project layering (controller, service, repository)"],
+  done:"You can build a CRUD API from an empty folder in an afternoon.",
+  path:[W("Python: FastAPI full course (Sanjeev Thiyagarajan)","https://www.youtube.com/watch?v=0sOvCWFmrtA","Python. Builds one API end to end: FastAPI, Postgres, SQLAlchemy, Alembic, JWT auth, pytest, Docker, CI, and deployment. Covers much of this roadmap."),
+   W("Java: Amigoscode Spring Boot full course",Y("Amigoscode Spring Boot full course"),"Java. REST controllers, services, JPA, and Postgres."),
+   W("Go: building a REST API in Go",Y("Go REST API tutorial net/http"),"Go. Pick a recent one using the standard library's net/http."),
+   W("TypeScript: Express or NestJS crash course",Y("Traversy Media Express crash course"),"Node. Express is simpler; NestJS docs if you want Spring-style structure.")],
+  refs:[B("Spring Boot guides","https://spring.io/guides","Short official guides per feature (REST, JPA, validation)."),
+   B("FastAPI tutorial","https://fastapi.tiangolo.com/tutorial/","The User Guide section, used as reference."),
+   B("Let's Go (Alex Edwards)","https://lets-go.alexedwards.net/","Go. Read straight through; it's built as one project."),
+   B("NestJS docs","https://docs.nestjs.com/","Overview section only.")]},
+ {id:"tooling",t:"Packages, project structure & config",d:"work",why:"Real projects need dependency management and environment-based config.",
+  covers:["Package manager and lockfiles","Project folder structure","Config via environment variables","Dev vs prod settings","A runnable README"],
+  done:"Someone else can clone your repo and run it from the README.",
+  path:[W("The Twelve-Factor App explained",Y("Twelve-Factor App explained"),"Short overview of the principles."),
+   R("The Twelve-Factor App","https://12factor.net/","Read factors I to V (codebase, dependencies, config, backing services, build/release/run). About 15 minutes."),
+   D("Your stack's package manager docs","","Maven or Gradle, uv or poetry, go mod, or npm: just the getting-started page.")],
+  refs:[B("The Twelve-Factor App","https://12factor.net/","The remaining factors, once you deploy.")]},
+ {id:"conc",t:"Concurrency in your language",d:"work",why:"Servers handle many requests at once; blocking code kills throughput.",
+  covers:["Blocking vs non-blocking I/O","Threads and thread pools (Java)","async/await and the event loop (Python, Node)","Goroutines and channels (Go)","Shared state and synchronization"],
+  done:"You can explain why one slow blocking call can stall your whole server.",
+  path:[W("Java: Defog Tech concurrency videos",Y("Defog Tech Java concurrency thread pool"),"Java. Thread pools, ExecutorService, locks."),
+   W("Python: asyncio explained",Y("ArjanCodes asyncio"),"Python. async/await and when it helps."),
+   W("Go: Jake Wright Concurrency in Go",Y("Jake Wright concurrency in Go"),"Go. Goroutines, channels, WaitGroups in 20 minutes."),
+   W("Node: What the heck is the event loop anyway? (Philip Roberts)","https://www.youtube.com/watch?v=8aGhZQkoFbQ","Node. The classic event loop talk.")],
+  refs:[B("Java Concurrency in Practice","https://jcip.net/","Only ch. 1 to 3 and ch. 6 (task execution)."),
+   B("Python asyncio docs","https://docs.python.org/3/library/asyncio.html","Coroutines and Tasks page."),
+   B("Concurrency in Go (Cox-Buday)","https://www.oreilly.com/library/view/concurrency-in-go/9781491941294/","Only ch. 3 (Go's concurrency building blocks).")]}
+]},
+
+{kind:"group",title:"Databases",when:"November",note:"Use PostgreSQL as your relational database.",topics:[
+ {id:"sql",t:"SQL fundamentals",d:"deep",why:"Every backend role touches SQL, and many interviews include a SQL question.",
+  covers:["SELECT, WHERE, ORDER BY, LIMIT","INSERT, UPDATE, DELETE","All JOIN types","GROUP BY and HAVING","Subqueries and CTEs","Window functions (ROW_NUMBER, RANK, running totals)","NULL handling"],
+  done:"You can write a multi-join aggregate query without trial and error.",
+  path:[W("freeCodeCamp: SQL full database course","https://www.youtube.com/watch?v=HXV3zeQKqGY","Queries, joins, and aggregates from zero."),
+   D("SQLBolt","https://sqlbolt.com/","Quick interactive drills of the basics."),
+   W("techTFQ: window functions",Y("techTFQ SQL window functions"),"The clearest window function explanation; also watch his CTE video."),
+   D("PostgreSQL Exercises","https://pgexercises.com/","Joins, aggregates, and recursive queries on a real schema."),
+   D("LeetCode SQL 50","https://leetcode.com/studyplan/top-sql-50/","Interview-style SQL questions.")],
+  refs:[B("PostgreSQL tutorial (official)","https://www.postgresql.org/docs/current/tutorial.html","Only Part I, ch. 2 to 3 (SQL language, advanced features)."),
+   B("Learning SQL (Beaulieu)","https://www.oreilly.com/library/view/learning-sql-3rd/9781492057604/","Only ch. 5 (joins), 8 (grouping), 9 (subqueries), 16 (analytic functions).")]},
+ {id:"schema",t:"Schema design & normalization",d:"deep",why:"Bad schemas cause bugs and slow queries that are painful to fix later.",
+  covers:["Primary and foreign keys","Constraints (NOT NULL, UNIQUE, CHECK)","1:1, 1:N, N:M relationships","ER diagrams","1NF, 2NF, 3NF","When to denormalize","Data types and choosing them"],
+  done:"You can design the tables for an app like Airbnb and justify each one.",
+  path:[W("freeCodeCamp: Database Design Course (Caleb Curry)",Y("freeCodeCamp Database Design Course Caleb Curry"),"Keys, relationships, ER diagrams, and constraints."),
+   W("Decomplexify: Learn Database Normalization",Y("Decomplexify database normalization 1NF 2NF 3NF"),"Normal forms in about 30 minutes."),
+   D("Design 3 schemas","","Draw schemas for a bookstore, a ride-sharing app, and your Project 1. Check them with dbdiagram.io.")],
+  refs:[B("PostgreSQL docs: constraints","https://www.postgresql.org/docs/current/ddl-constraints.html","One page."),
+   B("Designing Data-Intensive Applications",DDIA,"Only the first half of ch. 2 (relational vs document models).")]},
+ {id:"idx",t:"Indexes & query performance",d:"deep",why:"The most common real-world performance fix, and a favorite interview topic.",
+  covers:["How a B-tree index works","Single vs composite indexes, column order","Covering and partial indexes","Why indexes slow down writes","Reading EXPLAIN ANALYZE","Seq scan vs index scan"],
+  done:"You can take a slow query, read its plan, add the right index, and measure the speed-up.",
+  path:[W("Hussein Nasser: database indexing",Y("Hussein Nasser database indexing explained"),"Hands-on with Postgres and EXPLAIN."),
+   W("PostgreSQL EXPLAIN ANALYZE",Y("PostgreSQL EXPLAIN ANALYZE explained"),"How to read a query plan."),
+   D("Index a slow query yourself","","Insert a million rows into a test table, run a slow query, add an index, compare plans.")],
+  refs:[B("Use The Index, Luke","https://use-the-index-luke.com/","Only ch. 1 (anatomy of an index), ch. 2 (the WHERE clause), and the Sorting and Grouping chapter."),
+   B("PostgreSQL docs: using EXPLAIN","https://www.postgresql.org/docs/current/using-explain.html","One page.")]},
+ {id:"tx",t:"Transactions, ACID & isolation",d:"deep",why:"Prevents double charges, lost updates, and other data bugs.",
+  covers:["ACID","BEGIN, COMMIT, ROLLBACK","Read phenomena: dirty read, non-repeatable read, phantom, lost update","Isolation levels","Row locks and SELECT FOR UPDATE","Optimistic vs pessimistic locking"],
+  done:"You can explain how two people booking the last seat could both succeed, and how to stop it.",
+  path:[W("Hussein Nasser: ACID properties",Y("Hussein Nasser ACID properties in databases"),"Each property with Postgres examples."),
+   W("Hussein Nasser: read phenomena and isolation levels",Y("Hussein Nasser read phenomena isolation levels"),"Isolation levels and the anomalies each one prevents."),
+   W("Optimistic vs pessimistic locking",Y("optimistic vs pessimistic locking database"),"Pick one with code examples."),
+   D("Reproduce a lost update","","Open two psql sessions and recreate the double-booking bug, then fix it with FOR UPDATE.")],
+  refs:[B("Designing Data-Intensive Applications",DDIA,"Only ch. 7 (transactions)."),
+   B("PostgreSQL docs: transaction isolation","https://www.postgresql.org/docs/current/transaction-iso.html","One page.")]},
+ {id:"orm",t:"ORMs, migrations & the N+1 problem",d:"work",why:"Most codebases use an ORM, and N+1 queries are a classic performance bug.",
+  covers:["Mapping models to tables","Relationships in the ORM","Lazy vs eager loading","The N+1 query problem","Schema migrations","Connection pooling"],
+  done:"Your project's schema changes go through migration files, and you've fixed one N+1 query.",
+  path:[W("The N+1 query problem",Y("N+1 query problem explained"),"Short explainer; then find it in your own project's logs."),
+   W("Your framework course's ORM section","","Python: the FastAPI course covers SQLAlchemy and Alembic. Java: Amigoscode covers JPA. Go and Node: see the docs below."),
+   W("Database connection pooling",Y("Hussein Nasser database connection pooling"),"Why apps reuse connections.")],
+  refs:[B("SQLAlchemy ORM quickstart + Alembic tutorial","https://docs.sqlalchemy.org/","Python."),
+   B("Spring Data JPA + Flyway","https://spring.io/projects/spring-data-jpa","Java."),
+   B("Prisma docs","https://www.prisma.io/docs","TypeScript."),
+   B("Go: sqlc or GORM docs","https://docs.sqlc.dev/","Go. Many Go teams prefer sqlc over a full ORM.")]},
+ {id:"nosql",t:"NoSQL (one: MongoDB)",d:"work",why:"Common in job listings, and you should know when it fits better than SQL.",
+  covers:["SQL vs NoSQL trade-offs","Document model","CRUD and queries","Embedding vs referencing","Indexes in MongoDB","Other NoSQL types (key-value, wide-column, graph) at a glance"],
+  done:"You can explain when you'd pick MongoDB over Postgres and when you wouldn't.",
+  path:[W("ByteByteGo: SQL vs NoSQL",Y("ByteByteGo SQL vs NoSQL"),"The trade-offs and the NoSQL families."),
+   W("Web Dev Simplified: MongoDB crash course",Y("Web Dev Simplified MongoDB crash course"),"CRUD, queries, and indexes."),
+   D("MongoDB University: data modeling","https://learn.mongodb.com/","Free. Covers embedding vs referencing properly.")],
+  refs:[B("Designing Data-Intensive Applications",DDIA,"Only ch. 2 (data models).")]}
+]},
+
+{kind:"group",title:"APIs",when:"November",topics:[
+ {id:"rest",t:"REST API design",d:"deep",why:"The core of most backend jobs and many interview questions.",
+  covers:["Resources and URL naming","Methods: GET, POST, PUT, PATCH, DELETE","Status codes","Statelessness","Versioning","Idempotency and idempotency keys","Nested resources"],
+  done:"You can design the endpoints for a feature and justify every status code.",
+  path:[W("ByteByteGo: API design and REST",Y("ByteByteGo REST API design"),"Principles in short videos."),
+   W("Idempotency in APIs",Y("idempotency keys API explained"),"Why retries must be safe."),
+   R("Microsoft: Web API design best practices","https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design","One page covering naming, methods, status codes, and versioning."),
+   R("Stripe: idempotency","https://stripe.com/blog/idempotency","Short article from the company that popularized idempotency keys.")],
+  refs:[B("Zalando RESTful API Guidelines","https://opensource.zalando.com/restful-api-guidelines/","Look up specific rules when designing endpoints."),
+   B("API Design Patterns (Geewax)","https://www.manning.com/books/api-design-patterns","Only ch. 1 to 3 if you want the deeper reasoning.")]},
+ {id:"valid",t:"Validation & error handling",d:"deep",why:"Bad input should never crash your server or corrupt data.",
+  covers:["Validating request bodies and params","400 vs 404 vs 409 vs 422","One consistent error format","Global exception handlers","Never leaking stack traces"],
+  done:"Every error from your API has the same shape and a helpful message.",
+  path:[W("Validation in your framework",Y("Spring Boot validation exception handling"),"Java link shown; search the same for FastAPI Pydantic, Go validator, or class-validator."),
+   R("RFC 9457: Problem Details","https://www.rfc-editor.org/rfc/rfc9457","Read sections 1 to 3 only: the standard error shape.")],
+  refs:[B("Zalando guidelines: errors","https://opensource.zalando.com/restful-api-guidelines/","The error handling section.")]},
+ {id:"page",t:"Pagination, filtering & sorting",d:"work",why:"Any list endpoint needs it once data grows.",
+  covers:["Offset/limit pagination","Cursor (keyset) pagination","Why offset gets slow","Filtering and sorting params"],
+  done:"You can explain why cursor pagination works better on large, changing tables.",
+  path:[W("Hussein Nasser: offset pagination is bad",Y("Hussein Nasser database pagination offset"),"Why offset slows down and the keyset alternative."),
+   R("Google AIP-158: Pagination","https://google.aip.dev/158","Short spec for page tokens.")],
+  refs:[B("Use The Index, Luke","https://use-the-index-luke.com/","Only the Partial Results chapter (fetching the next page).")]},
+ {id:"oas",t:"API docs with OpenAPI / Swagger",d:"work",why:"Teams document APIs this way, and it makes your projects easy to review.",
+  covers:["What OpenAPI is","Generating specs from code","Swagger UI","Documenting auth and errors"],
+  done:"Your project has a live interactive API docs page.",
+  path:[W("OpenAPI and Swagger explained",Y("OpenAPI Swagger tutorial for beginners"),"Concepts in under 20 minutes."),
+   D("Generate docs for your API","","FastAPI does it automatically; Spring uses springdoc-openapi; Go uses swaggo; Nest has @nestjs/swagger.")],
+  refs:[B("OpenAPI: Learn","https://learn.openapis.org/","Getting Started pages only.")]},
+ {id:"gql",t:"GraphQL & gRPC",d:"aware",why:"Common alternatives to REST; may come up in interviews.",
+  covers:["REST vs GraphQL vs gRPC","Over- and under-fetching","Protocol Buffers","When teams pick each"],
+  done:"You can give one good use case for each.",
+  path:[W("ByteByteGo: API architecture styles",Y("ByteByteGo REST vs GraphQL vs gRPC"),"Compares all three."),
+   W("Fireship: GraphQL in 100 seconds",Y("Fireship GraphQL explained in 100 seconds"),"Quick refresher.")],
+  refs:[B("graphql.org: Learn","https://graphql.org/learn/","Introduction page."),B("gRPC: Introduction","https://grpc.io/docs/what-is-grpc/introduction/","Introduction page.")]}
+]},
+
+{kind:"group",title:"Auth & security",when:"November to December",topics:[
+ {id:"pw",t:"Password hashing",d:"deep",why:"Getting this wrong is a serious, very public mistake.",
+  covers:["Hashing vs encryption","Salts","bcrypt and Argon2","Why fast hashes (MD5, SHA) are wrong for passwords"],
+  done:"Your signup flow stores only slow, salted hashes.",
+  path:[W("Computerphile: How NOT to Store Passwords",Y("Computerphile How NOT to Store Passwords"),"Tom Scott's classic explainer."),
+   R("OWASP Password Storage Cheat Sheet","https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html","Short; tells you exactly which algorithm and settings to use.")],
+  refs:[B("The Copenhagen Book","https://thecopenhagenbook.com/","Password authentication page.")]},
+ {id:"sess",t:"Sessions, cookies & JWT",d:"deep",why:"Every app with users needs authentication.",
+  covers:["Session-based auth","Token-based auth and JWT structure","Cookie flags: HttpOnly, Secure, SameSite","Access and refresh tokens","Logout and revocation","Where to store tokens"],
+  done:"You can explain the trade-offs of sessions vs JWT and implement either.",
+  path:[W("ByteByteGo: session vs token authentication",Y("ByteByteGo session cookie JWT token authentication"),"Side-by-side comparison."),
+   W("Web Dev Simplified: JWT",Y("Web Dev Simplified what is JWT"),"How a JWT is built and verified."),
+   W("Refresh tokens explained",Y("access token refresh token explained"),"Why short-lived access tokens need refresh tokens."),
+   R("The Copenhagen Book: sessions","https://thecopenhagenbook.com/","Read the Sessions and Server-side tokens pages.")],
+  refs:[B("OWASP Session Management Cheat Sheet","https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html","Security checklist."),
+   B("JWT.io introduction","https://jwt.io/introduction","Token structure reference.")]},
+ {id:"oauth",t:"OAuth 2.0 & OpenID Connect",d:"work",why:"Powers every Log in with Google button.",
+  covers:["OAuth roles and scopes","Authorization code flow","PKCE","OpenID Connect and ID tokens","Access vs ID tokens"],
+  done:"You've added one social login to a project.",
+  path:[W("OktaDev: OAuth 2.0 and OpenID Connect (in plain English)","https://www.youtube.com/watch?v=996OiexHze0","The most recommended OAuth talk; covers everything listed."),
+   R("OAuth 2.0 Simplified: authorization code + PKCE","https://www.oauth.com/","Read the Authorization Code and PKCE sections only.")],
+  refs:[B("OAuth 2.0 Simplified (Parecki)","https://www.oauth.com/","The rest is reference.")]},
+ {id:"authz",t:"Authorization & roles (RBAC)",d:"work",why:"Users must only access what they're allowed to.",
+  covers:["Authentication vs authorization","Role-based access control","Ownership checks (IDOR)","Deny by default"],
+  done:"A normal user can't read another user's data in your app, and you've tested it.",
+  path:[W("RBAC explained",Y("role based access control explained"),"Pick a short one."),
+   D("PortSwigger: access control labs","https://portswigger.net/web-security/access-control","Do the Apprentice labs; you'll exploit IDOR yourself.")],
+  refs:[B("OWASP Authorization Cheat Sheet","https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html","Concise rules.")]},
+ {id:"owasp",t:"OWASP Top 10: SQLi, XSS, CSRF, SSRF",d:"work",why:"Interviewers ask, and these are how real apps get breached.",
+  covers:["SQL injection and parameterized queries","Cross-site scripting (XSS)","Cross-site request forgery (CSRF)","Server-side request forgery (SSRF)","Security misconfiguration","Vulnerable dependencies"],
+  done:"You can explain and prevent SQL injection, XSS, and CSRF.",
+  path:[W("Computerphile: SQL injection and XSS",Y("Computerphile SQL injection"),"Watch their SQL injection and cross site scripting videos."),
+   W("Rana Khalil: Web Security Academy walkthroughs",Y("Rana Khalil web security academy SQL injection"),"Use when you're stuck on a lab."),
+   D("PortSwigger Web Security Academy","https://portswigger.net/web-security","Do the Apprentice labs for SQLi, XSS, CSRF, and SSRF.")],
+  refs:[B("OWASP Top 10","https://owasp.org/www-project-top-ten/","Skim each entry's description and prevention section.")]},
+ {id:"cors",t:"CORS, HTTPS & secrets",d:"work",why:"Common sources of confusing bugs and leaked keys.",
+  covers:["Same-origin policy","CORS headers and preflight","HTTPS certificates","Keeping secrets out of Git","Secret managers (aware)"],
+  done:"No secret is committed to any of your repos, and you can fix a CORS error without guessing.",
+  path:[W("Fireship: CORS in 100 seconds",Y("Fireship CORS in 100 seconds"),"Quick and clear."),
+   R("MDN: CORS","https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS","Read the preflight section."),
+   W("Managing secrets and env variables",Y("how to manage secrets environment variables developers"),"Pick one; then add a .env.example to your repo.")],
+  refs:[B("Let's Encrypt: how it works","https://letsencrypt.org/how-it-works/","One page."),
+   B("The Twelve-Factor App: config","https://12factor.net/config","One page.")]}
+]},
+
+{kind:"group",title:"Testing & code quality",when:"December",topics:[
+ {id:"unit",t:"Unit testing & mocking",d:"deep",why:"Teams expect tests with every change; untested projects look unfinished.",
+  covers:["The test pyramid","Arrange, act, assert","Mocks, stubs, fakes","Testing API endpoints","Test coverage (and its limits)"],
+  done:"Your core logic has meaningful tests that run in seconds.",
+  path:[W("Python: pytest tutorial",Y("pytest tutorial for beginners"),"Python. The FastAPI course also has a full testing section."),
+   W("Java: JUnit 5 and Mockito",Y("Amigoscode JUnit Mockito testing Spring Boot"),"Java."),
+   W("Go: testing in Go",Y("Go testing tutorial table driven tests"),"Go. Table-driven tests are the idiom."),
+   W("TypeScript: Jest or Vitest",Y("Jest testing crash course"),"Node."),
+   R("The Practical Test Pyramid","https://martinfowler.com/articles/practical-test-pyramid.html","What to test at each level.")],
+  refs:[B("Unit Testing Principles, Practices, and Patterns (Khorikov)","https://www.manning.com/books/unit-testing","Only ch. 1 to 5 when you want depth on mocks.")]},
+ {id:"integ",t:"Integration tests with real databases",d:"work",why:"Catches the bugs mocks hide.",
+  covers:["Integration vs unit tests","Spinning up Postgres in tests","Testing endpoints end to end","Test data setup and cleanup"],
+  done:"Your API tests run against a real database in CI.",
+  path:[W("Testcontainers intro",Y("Testcontainers tutorial"),"Pick the one for your language."),
+   R("Testcontainers: getting started","https://testcontainers.com/getting-started/","Short.")],
+  refs:[B("Testcontainers docs","https://testcontainers.com/","Per-language modules.")]},
+ {id:"clean",t:"Clean code, SOLID & design patterns",d:"work",why:"Readable code gets your PRs approved and helps in code-review interviews.",
+  covers:["Naming and small functions","Layered architecture","SOLID principles","Common patterns: strategy, factory, observer, adapter, singleton, builder","Refactoring safely"],
+  done:"Your project has clear layers and no 300-line functions.",
+  path:[W("ArjanCodes: SOLID",Y("ArjanCodes SOLID principles"),"Practical code examples."),
+   W("Fireship: 10 Design Patterns Explained in 10 Minutes",Y("Fireship 10 design patterns explained in 10 minutes"),"The overview."),
+   R("Refactoring.Guru","https://refactoring.guru/design-patterns","Read only the six patterns listed above.")],
+  refs:[B("Clean Code (Martin)","https://www.oreilly.com/library/view/clean-code-a/9780136083238/","Only ch. 2 (names) and ch. 3 (functions).")]}
+]},
+
+{kind:"mile",title:"Milestone: Project 1, a deployed REST API",text:"Pick something with real data relationships (expense tracker, booking system, URL shortener with analytics). It must have:",items:["PostgreSQL with migrations and at least one meaningful index","Signup and login with hashed passwords and sessions or JWT","Role checks so users only see their own data","Validation, consistent errors, and pagination","OpenAPI docs and unit plus integration tests","Deployed at a public URL, with a clear README"]},
+
+{kind:"group",title:"Caching & performance",when:"December to January",topics:[
+ {id:"redis",t:"Redis",d:"work",why:"The most common cache and a frequent interview topic.",
+  covers:["Strings, hashes, lists, sets, sorted sets","TTL and expiry","Redis as cache, session store, and rate limiter","Persistence (aware)","Pub/sub (aware)"],
+  done:"You've cached a slow endpoint and measured the difference.",
+  path:[W("Web Dev Simplified: Redis crash course",Y("Web Dev Simplified Redis in 30 minutes"),"Data types and caching an API."),
+   D("Redis University: Get Started with Redis","https://university.redis.io/","Free, short, official.")],
+  refs:[B("Redis docs: data types","https://redis.io/docs/latest/","Look up commands as needed.")]},
+ {id:"cache",t:"Caching strategies & invalidation",d:"work",why:"Caching is easy; keeping it correct is the hard, interview-worthy part.",
+  covers:["Cache-aside, read-through, write-through, write-behind","TTL choices","Invalidation","Cache stampede","Eviction policies (LRU)"],
+  done:"You can explain how your cache stays consistent when data changes.",
+  path:[W("ByteByteGo: caching strategies",Y("ByteByteGo top caching strategies"),"All the strategies in one video."),
+   W("Cache stampede / thundering herd",Y("cache stampede thundering herd explained"),"Short explainer."),
+   R("AWS: caching best practices","https://aws.amazon.com/caching/best-practices/","One page.")],
+  refs:[B("System Design Interview Vol. 1 (Alex Xu)","https://bytebytego.com/","Only the cache section of ch. 1.")]},
+ {id:"httpc",t:"HTTP caching & CDNs",d:"aware",why:"The cheapest speed-up for static and public content.",
+  covers:["Cache-Control","ETag and conditional requests","What a CDN does"],
+  done:"You can explain what Cache-Control: max-age=3600 does.",
+  path:[W("HTTP caching explained",Y("HTTP caching Cache-Control ETag explained"),"Pick one under 20 minutes."),
+   W("ByteByteGo: what is a CDN",Y("ByteByteGo what is a CDN"),"Short.")],
+  refs:[B("MDN: HTTP caching","https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching","Reference.")]},
+ {id:"load",t:"Profiling & load testing",d:"work",why:"Turns it's fast into numbers you can put on a resume.",
+  covers:["Latency percentiles (p50, p95, p99)","Throughput","Load testing with k6","Finding the bottleneck"],
+  done:"You have a before-and-after number for one optimization.",
+  path:[W("k6 load testing tutorial",Y("k6 load testing tutorial"),"Write and run your first script."),
+   R("k6 docs: get started","https://grafana.com/docs/k6/latest/","The Get Started section.")],
+  refs:[B("k6 docs","https://grafana.com/docs/k6/latest/","Reference.")]}
+]},
+
+{kind:"group",title:"Async & messaging",when:"January",topics:[
+ {id:"jobs",t:"Background jobs",d:"work",why:"Emails, image processing, and reports shouldn't block a request.",
+  covers:["Why move work out of the request","Workers and job queues","Retries and backoff","Idempotent jobs","Scheduled jobs"],
+  done:"One slow task in your project runs in a background worker.",
+  path:[W("Python: Celery tutorial",Y("Celery tutorial Python Redis"),"Python."),
+   W("Node: BullMQ tutorial",Y("BullMQ tutorial"),"Node."),
+   W("Java: Spring @Async and @Scheduled",Y("Spring Boot Async Scheduled tutorial"),"Java."),
+   W("Go: background jobs with asynq",Y("Go asynq background jobs"),"Go.")],
+  refs:[B("Celery docs","https://docs.celeryq.dev/","Python."),B("BullMQ docs","https://docs.bullmq.io/","Node."),B("Spring guide: scheduling tasks","https://spring.io/guides/gs/scheduling-tasks","Java.")]},
+ {id:"mq",t:"Message queues (RabbitMQ)",d:"work",why:"How services talk asynchronously; common in system design.",
+  covers:["Producers and consumers","Exchanges and routing","Acknowledgements","At-most-once vs at-least-once delivery","Retries and dead-letter queues"],
+  done:"You can explain at-least-once delivery and why consumers must be idempotent.",
+  path:[W("Hussein Nasser: RabbitMQ crash course",Y("Hussein Nasser RabbitMQ crash course"),"Concepts and code."),
+   D("RabbitMQ tutorials 1 to 5","https://www.rabbitmq.com/tutorials","Official, in your language."),
+   W("Dead-letter queues explained",Y("dead letter queue explained"),"Short.")],
+  refs:[B("Designing Data-Intensive Applications",DDIA,"Only the Messaging Systems section of ch. 11.")]},
+ {id:"kafka",t:"Event streaming (Kafka)",d:"aware",why:"Very common at larger companies and in system design answers.",
+  covers:["Topics and partitions","Consumer groups","Offsets and retention","Kafka vs RabbitMQ"],
+  done:"You can explain when you'd choose Kafka over RabbitMQ.",
+  path:[W("ByteByteGo: why is Kafka fast / Kafka explained",Y("ByteByteGo Kafka"),"Overview."),
+   W("Confluent: Apache Kafka 101",Y("Confluent Apache Kafka 101 Tim Berglund"),"Short official video course.")],
+  refs:[B("Designing Data-Intensive Applications",DDIA,"Only the Partitioned Logs section of ch. 11.")]},
+ {id:"ws",t:"WebSockets & real-time",d:"aware",why:"Chat, notifications, and live dashboards rely on it.",
+  covers:["Polling vs long polling vs WebSockets vs SSE","The WebSocket handshake","Scaling connections (aware)"],
+  done:"You can sketch how a chat app pushes messages to users.",
+  path:[W("Hussein Nasser: WebSockets crash course",Y("Hussein Nasser WebSockets crash course"),"Covers the handshake and alternatives.")],
+  refs:[B("MDN: WebSockets API","https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API","Reference.")]}
+]},
+
+{kind:"group",title:"DevOps & deployment",when:"January to February",topics:[
+ {id:"docker",t:"Docker",d:"work",why:"Nearly every team ships in containers.",
+  covers:["Images vs containers","Writing a Dockerfile","Layers and caching","Volumes","Ports and networking","Multi-stage builds"],
+  done:"Your app runs from a small, clean image.",
+  path:[W("TechWorld with Nana: Docker Tutorial for Beginners","https://www.youtube.com/watch?v=3c-iBn73dDE","Full course; covers everything listed except multi-stage builds."),
+   W("Docker multi-stage builds",Y("Docker multi-stage builds explained"),"Short; makes your images small.")],
+  refs:[B("Docker: Get started","https://docs.docker.com/get-started/","Reference.")]},
+ {id:"compose",t:"Docker Compose",d:"work",why:"Runs your app, database, and Redis together with one command.",
+  covers:["Defining services","Networks between services","Volumes for data","Env files","depends_on and health checks"],
+  done:"docker compose up starts your whole project.",
+  path:[W("TechWorld with Nana: Docker Compose",Y("TechWorld with Nana Docker Compose tutorial"),"Hands-on.")],
+  refs:[B("Docker Compose docs","https://docs.docker.com/compose/","Reference.")]},
+ {id:"ci",t:"CI/CD with GitHub Actions",d:"work",why:"Teams expect tests to run automatically on every pull request.",
+  covers:["Workflows, jobs, steps","Triggers (push, pull_request)","Running tests and linting","Service containers (Postgres in CI)","Secrets in CI","Deploying on merge"],
+  done:"Every PR in your repo shows a green or red check.",
+  path:[W("TechWorld with Nana: GitHub Actions",Y("TechWorld with Nana GitHub Actions tutorial"),"Core concepts and a full pipeline.")],
+  refs:[B("GitHub Actions docs","https://docs.github.com/en/actions","Reference.")]},
+ {id:"cloud",t:"Cloud basics (AWS)",d:"work",why:"Most listings mention a cloud provider; AWS is the most common.",
+  covers:["Regions and availability zones","IAM users, roles, policies","EC2","S3","RDS","VPC and security groups (basic)","Cost control"],
+  done:"One of your projects runs on AWS with a managed database.",
+  path:[W("freeCodeCamp: AWS Cloud Practitioner (Andrew Brown)",Y("freeCodeCamp AWS Certified Cloud Practitioner Andrew Brown"),"Long; watch only the sections on the services listed here."),
+   D("Deploy to AWS Free Tier","https://aws.amazon.com/free/","Put Project 2 on EC2 with RDS. Set a billing alarm first.")],
+  refs:[B("Adrian Cantrill courses (paid)","https://learn.cantrill.io/","Best-reviewed AWS courses if you want depth."),
+   B("AWS Skill Builder","https://skillbuilder.aws/","Free official courses.")]},
+ {id:"nginx",t:"Reverse proxies & load balancers",d:"aware",why:"Sits in front of almost every production backend.",
+  covers:["Forward vs reverse proxy","TLS termination","Routing","Load balancing"],
+  done:"You can draw where Nginx sits in a deployment diagram.",
+  path:[W("ByteByteGo: proxy vs reverse proxy",Y("ByteByteGo proxy vs reverse proxy"),"Short."),
+   W("Hussein Nasser: Nginx crash course",Y("Hussein Nasser NGINX crash course"),"Hands-on config.")],
+  refs:[B("Nginx beginner's guide","https://nginx.org/en/docs/beginners_guide.html","One page.")]},
+ {id:"k8s",t:"Kubernetes",d:"aware",why:"Widely used, but entry-level roles rarely need hands-on skill.",
+  covers:["Pods","Deployments","Services","Why teams use it"],
+  done:"You can explain what Kubernetes does in two sentences.",
+  path:[W("TechWorld with Nana: Kubernetes Tutorial for Beginners","https://www.youtube.com/watch?v=X48VuDVv0do","Watch the first hour only.")],
+  refs:[B("Kubernetes Basics tutorial","https://kubernetes.io/docs/tutorials/kubernetes-basics/","Reference.")]}
+]},
+
+{kind:"group",title:"Observability",when:"February",topics:[
+ {id:"log",t:"Structured logging",d:"work",why:"Logs are how you debug production.",
+  covers:["Log levels","JSON structured logs","Request or correlation IDs","What never to log"],
+  done:"You can trace one request through your logs.",
+  path:[W("Structured logging explained",Y("structured logging explained"),"Pick one for your language."),
+   R("OWASP Logging Cheat Sheet","https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html","What to log and what not to.")],
+  refs:[B("The Twelve-Factor App: logs","https://12factor.net/logs","One page.")]},
+ {id:"health",t:"Health checks & graceful shutdown",d:"work",why:"Lets load balancers and orchestrators manage your service safely.",
+  covers:["Liveness vs readiness","Health endpoints","Graceful shutdown"],
+  done:"Your app exposes a /health endpoint and finishes requests before stopping.",
+  path:[W("Liveness vs readiness probes",Y("liveness vs readiness probes explained"),"Short."),
+   W("Graceful shutdown",Y("graceful shutdown server explained"),"Search with your language name added.")],
+  refs:[B("Kubernetes: probes","https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/","Concepts apply outside Kubernetes.")]},
+ {id:"metrics",t:"Metrics & monitoring",d:"aware",why:"How teams know something broke before users complain.",
+  covers:["The four golden signals","Prometheus and Grafana","Alerting basics"],
+  done:"You can name the four golden signals.",
+  path:[W("TechWorld with Nana: How Prometheus Monitoring works",Y("TechWorld with Nana Prometheus monitoring explained"),"Overview."),
+   R("Google SRE book: Monitoring Distributed Systems","https://sre.google/sre-book/monitoring-distributed-systems/","One chapter; read the golden signals section.")],
+  refs:[B("Prometheus overview","https://prometheus.io/docs/introduction/overview/","Reference.")]},
+ {id:"trace",t:"Distributed tracing",d:"aware",why:"Follows one request across many services.",
+  covers:["Traces and spans","OpenTelemetry"],
+  done:"You can explain why tracing matters for microservices.",
+  path:[W("Distributed tracing explained",Y("distributed tracing OpenTelemetry explained"),"Pick one under 15 minutes.")],
+  refs:[B("OpenTelemetry: what is it","https://opentelemetry.io/docs/","Concepts page.")]}
+]},
+
+{kind:"mile",title:"Milestone: Project 2, production-grade upgrades",text:"Extend Project 1 or build a new one so it also has:",items:["A Redis cache on a slow endpoint, with before and after numbers from k6","A background worker fed by a queue, with retries","Docker and Docker Compose for the whole stack","GitHub Actions running tests on every PR","Structured logs and a health endpoint","Deployed on AWS"]},
+
+{kind:"group",title:"System design",when:"February to March",topics:[
+ {id:"scale",t:"Scalability basics",d:"work",why:"The foundation of every system design question.",
+  covers:["Vertical vs horizontal scaling","Stateless services","Latency vs throughput","Back-of-the-envelope estimates","Single points of failure"],
+  done:"You can explain how you'd take your project from 100 to 100,000 users.",
+  path:[W("Gaurav Sen: horizontal vs vertical scaling",Y("Gaurav Sen horizontal vs vertical scaling"),"Short classic."),
+   W("ByteByteGo: scale from zero to millions of users",Y("ByteByteGo scale from zero to millions of users"),"The whole journey in one video."),
+   R("System Design Primer: scalability sections","https://github.com/donnemartin/system-design-primer","Read the performance vs scalability and back-of-the-envelope sections.")],
+  refs:[B("System Design Interview Vol. 1 (Alex Xu)","https://bytebytego.com/","Only ch. 1 (scale from zero to millions) and ch. 2 (estimation).")]},
+ {id:"lb",t:"Load balancing & CDNs",d:"aware",why:"Appears in nearly every design answer.",
+  covers:["L4 vs L7 load balancers","Algorithms: round robin, least connections, hashing","Health checks","CDN placement"],
+  done:"You can place a load balancer and CDN correctly in a design.",
+  path:[W("ByteByteGo: load balancing algorithms",Y("ByteByteGo load balancing algorithms"),"Short.")],
+  refs:[B("Cloudflare: What is load balancing?","https://www.cloudflare.com/learning/performance/what-is-load-balancing/","One page.")]},
+ {id:"repl",t:"Replication & sharding",d:"work",why:"How databases scale past one machine.",
+  covers:["Leader-follower replication","Replication lag and read-your-writes","Sharding strategies (range, hash)","Hot spots","Consistent hashing"],
+  done:"You can explain read replicas and when sharding becomes necessary.",
+  path:[W("Hussein Nasser: database replication",Y("Hussein Nasser database replication"),"Concepts and trade-offs."),
+   W("ByteByteGo: database sharding",Y("ByteByteGo database sharding"),"Strategies and hot spots."),
+   W("ByteByteGo: consistent hashing",Y("ByteByteGo consistent hashing"),"Short.")],
+  refs:[B("Designing Data-Intensive Applications",DDIA,"Only ch. 5 sections on leaders/followers and replication lag, and ch. 6 sections on partitioning by key and hash."),
+   B("System Design Interview Vol. 1 (Alex Xu)","https://bytebytego.com/","Ch. 5 (consistent hashing).")]},
+ {id:"cap",t:"CAP & consistency models",d:"aware",why:"Comes up whenever you discuss distributed data.",
+  covers:["CAP theorem","Strong vs eventual consistency","Choosing per feature"],
+  done:"You can say which consistency a feature needs and why.",
+  path:[W("ByteByteGo: CAP theorem",Y("ByteByteGo CAP theorem"),"Short and correct.")],
+  refs:[B("Designing Data-Intensive Applications",DDIA,"Only the Linearizability and CAP sections of ch. 9."),
+   B("Jepsen: consistency models","https://jepsen.io/consistency","Reference map.")]},
+ {id:"rate",t:"Rate limiting",d:"work",why:"A very common interview design question.",
+  covers:["Token bucket","Leaking bucket","Fixed and sliding window","Where to enforce limits","Distributed rate limiting with Redis"],
+  done:"You've built a simple Redis-based rate limiter.",
+  path:[W("ByteByteGo: rate limiting algorithms",Y("ByteByteGo rate limiter algorithms"),"All algorithms compared."),
+   R("Stripe: scaling your API with rate limiters","https://stripe.com/blog/rate-limiters","How a real company does it.")],
+  refs:[B("System Design Interview Vol. 1 (Alex Xu)","https://bytebytego.com/","Ch. 4 (design a rate limiter).")]},
+ {id:"micro",t:"Monolith vs microservices",d:"aware",why:"Interviewers like to hear that you'd start simple.",
+  covers:["Monolith vs microservices trade-offs","API gateway","Service-to-service communication","Why most teams start with a monolith"],
+  done:"You can argue both sides convincingly.",
+  path:[W("ByteByteGo: microservices architecture",Y("ByteByteGo microservices architecture"),"Overview including API gateways."),
+   R("Microservices (Martin Fowler's site)","https://martinfowler.com/articles/microservices.html","The article that defined the term.")],
+  refs:[B("Building Microservices (Newman)","https://samnewman.io/books/building_microservices_2nd_edition/","Only ch. 1."),
+   B("microservices.io","https://microservices.io/","Pattern reference.")]},
+ {id:"sdi",t:"System design interview practice",d:"work",why:"Increasingly asked even for new grads, usually at a lighter level.",
+  covers:["Interview framework: requirements, API, data model, high-level design, deep dive","URL shortener","Rate limiter","News feed","Chat system","Key-value store"],
+  done:"You can design a URL shortener or rate limiter in 35 minutes.",
+  path:[W("Hello Interview: system design walkthroughs","https://www.youtube.com/@hello_interview","Mock interviews by ex-FAANG interviewers."),
+   R("Hello Interview: delivery framework","https://www.hellointerview.com/learn/system-design","Read the framework page, then their breakdowns of the problems listed."),
+   D("Practice out loud","","Do one problem a week, timed, explaining as if to an interviewer.")],
+  refs:[B("System Design Interview Vol. 1 (Alex Xu)","https://bytebytego.com/","Ch. 3 (framework), then ch. 6, 8, 11, 12 (key-value store, URL shortener, news feed, chat).")]}
+]},
+
+{kind:"mile",title:"Milestone: Project 3 (optional)",text:"Only if time allows. Pick one thing that gives you a strong interview story:",items:["A rate limiter or real-time feature built on what you learned","Something with real users, even a small group","A measurable reliability or performance win you can explain end to end"]}
+];
+
+const KEY="be-roadmap-done-v1";
+let done={};
+try{done=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){done={};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}}
+
+const byId={};
+const map=document.getElementById("map");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const depthName={deep:"Go deep",work:"Working knowledge",aware:"Awareness"};
+
+DATA.forEach((g,gi)=>{
+  const row=document.createElement("section");
+  row.className="row"+(gi===0?" first":"")+(gi===DATA.length-1?" last":"")+(g.kind==="par"?" par":"");
+  if(g.kind==="mile"){
+    row.innerHTML=`<div class="milestone"><h2>${esc(g.title)}</h2><p>${esc(g.text)}</p><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`;
+    map.appendChild(row);return;
+  }
+  const L=[],Rt=[];
+  g.topics.forEach((t,i)=>{byId[t.id]={...t,group:g.title};(i%2===0?L:Rt).push(t);});
+  const nodeHTML=t=>`<button class="node d-${t.d}" data-id="${t.id}" type="button"><span class="dot" title="${depthName[t.d]}"></span><span class="t">${esc(t.t)}</span><span class="chk" aria-hidden="true"></span></button>`;
+  row.innerHTML=`<div class="cluster left">${L.map(nodeHTML).join("")}</div>
+  <div class="gbox ${L.length?"has-l":""} ${Rt.length?"has-r":""}"><h2>${esc(g.title)}</h2><span class="when">${esc(g.when)}</span>${g.note?`<span class="gnote">${esc(g.note)}</span>`:""}</div>
+  <div class="cluster right">${Rt.map(nodeHTML).join("")}</div>`;
+  map.appendChild(row);
+});
+
+const total=Object.keys(byId).length;
+function refresh(){
+  let n=0;
+  document.querySelectorAll(".node").forEach(b=>{
+    const on=!!done[b.dataset.id]; if(on)n++;
+    b.classList.toggle("is-done",on);
+    b.querySelector(".chk").textContent=on?"✓":"";
+    b.setAttribute("aria-label",byId[b.dataset.id].t+(on?" (done)":""));
+  });
+  document.getElementById("pcount").textContent=`${n} of ${total} done`;
+  document.getElementById("pbar").style.width=(n/total*100)+"%";
+}
+
+const panel=document.getElementById("panel"),shade=document.getElementById("shade"),pbody=document.getElementById("pbody");
+let lastFocus=null;
+function stepHTML(s){
+  const tag=`<span class="ty ty-${s.ty.toLowerCase()}">${s.ty==="Watch"?"▶ Watch":s.ty}</span>`;
+  const name=s.u?`<a href="${s.u}" target="_blank" rel="noopener">${esc(s.n)}</a>`:`<strong>${esc(s.n)}</strong>`;
+  const srch=s.search?`<span class="k">YouTube search</span>`:"";
+  return `<li>${tag}${name}${srch}${s.note?`<span class="w">${esc(s.note)}</span>`:""}</li>`;
+}
+function open(id){
+  const t=byId[id];lastFocus=document.activeElement;
+  document.getElementById("ptitle").textContent=t.t;
+  const on=!!done[id];
+  pbody.innerHTML=`<div class="meta"><span class="badge d-${t.d}"><span class="dot"></span>${depthName[t.d]}</span><span class="badge">${esc(t.group)}</span></div>
+  <p>${esc(t.why)}</p>
+  <h4>This topic covers</h4>
+  <ul class="covers">${t.covers.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>
+  <h4>Learning path (in order)</h4>
+  <ol class="steps">${t.path.map(stepHTML).join("")}</ol>
+  <div class="done-box"><strong>You're done when:</strong> ${esc(t.done)}</div>
+  <h4>Reference (read only these parts)</h4>
+  <ul class="src">${t.refs.map(r=>`<li><a href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}</a><span class="w">${esc(r.note)}</span></li>`).join("")}</ul>
+  <button class="mark ${on?"on":""}" id="mark" type="button">${on?"Done ✓ (click to undo)":"Mark as done"}</button>`;
+  document.getElementById("mark").onclick=()=>{done[id]=!done[id];if(!done[id])delete done[id];save();refresh();open(id);};
+  panel.classList.add("open");shade.classList.add("open");panel.setAttribute("aria-hidden","false");
+  document.getElementById("close").focus();
+}
+function close(){panel.classList.remove("open");shade.classList.remove("open");panel.setAttribute("aria-hidden","true");if(lastFocus)lastFocus.focus();}
+map.addEventListener("click",e=>{const b=e.target.closest(".node");if(b)open(b.dataset.id);});
+shade.onclick=close;document.getElementById("close").onclick=close;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&panel.classList.contains("open"))close();});
+document.getElementById("reset").onclick=()=>{if(confirm("Clear all progress?")){done={};save();refresh();}};
+refresh();
+</script>
+
+</body>
+</html>

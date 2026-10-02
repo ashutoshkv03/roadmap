@@ -155,13 +155,22 @@ aside.open{transform:none}
 .ty{display:inline-block;font-size:.75rem;font-weight:700;border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:middle;color:#fff}
 .ty-watch{background:#c4302b}.ty-practice{background:var(--work)}.ty-read{background:#2563eb}
 .panel-note{font-size:.85rem;color:var(--muted);margin-top:14px}
+.node .dt{display:block;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:.78rem;opacity:.8;margin-top:2px}
+.node.is-done .t .dt{text-decoration:none}
+.node.is-now{box-shadow:0 0 0 3px var(--deep)}
+.node.is-late .dt{color:#c4302b;opacity:1;font-weight:700}
+.node.is-late .dt::after{content:" · overdue"}
+.node.is-now .dt::after{content:" · now"}
+.psched{max-width:900px;margin:0 auto;padding:0 20px 10px;font-size:.88rem;color:var(--muted)}
+.psched .late{color:#c4302b}
+.milestone .mdate{font-weight:700;opacity:.85}
 </style>
 </head>
 <body>
 <header>
   <h1>Backend Engineer Roadmap</h1>
   <p>Everything you need to get hired as a backend engineer, and nothing you don't. Work top to bottom, keep the blue track running every week, and click any box to see everything it covers, a video-first learning path in order, and only the book chapters worth reading.</p>
-  <p>Paced for October 2026 to June 2027 alongside classes and part-time work.</p>
+  <p>Tentative dates assume about 10 to 12 hours a week alongside classes and part-time work. A purple outline marks what is scheduled right now; red dates mean that topic is overdue.</p>
 </header>
 
 <div class="legend" aria-label="Depth legend">
@@ -176,6 +185,7 @@ aside.open{transform:none}
     <div class="bar" aria-hidden="true"><i id="pbar"></i></div>
     <button class="reset" id="reset" type="button">Reset</button>
   </div>
+  <div class="psched" id="psched"></div>
 </div>
 
 <main id="map"></main>
@@ -655,6 +665,29 @@ const DATA=[
 {kind:"mile",title:"Milestone: Project 3 (optional)",text:"Only if time allows. Pick one thing that gives you a strong interview story:",items:["A rate limiter or real-time feature built on what you learned","Something with real users, even a small group","A measurable reliability or performance win you can explain end to end"]}
 ];
 
+
+const SCHED={
+ dsa:["2026-10-02","2027-03-31"],resume:["2026-10-02","2026-10-31"],behav:["2027-01-05","2027-01-31"],
+ net:["2026-10-03","2026-10-09"],linux:["2026-10-08","2026-10-12"],git:["2026-10-13","2026-10-15"],os:["2026-10-16","2026-10-18"],
+ lang:["2026-10-19","2026-11-01"],fw:["2026-11-02","2026-11-12"],tooling:["2026-11-13","2026-11-14"],conc:["2026-11-13","2026-11-15"],
+ sql:["2026-11-16","2026-11-22"],schema:["2026-11-23","2026-11-26"],idx:["2026-11-27","2026-11-30"],tx:["2026-12-01","2026-12-03"],orm:["2026-12-04","2026-12-05"],nosql:["2026-12-05","2026-12-06"],
+ rest:["2026-12-07","2026-12-10"],valid:["2026-12-11","2026-12-12"],page:["2026-12-13","2026-12-14"],oas:["2026-12-15","2026-12-16"],gql:["2026-12-17","2026-12-17"],
+ pw:["2026-12-18","2026-12-18"],sess:["2026-12-19","2026-12-23"],oauth:["2026-12-24","2026-12-27"],authz:["2026-12-28","2026-12-29"],owasp:["2026-12-30","2027-01-02"],cors:["2027-01-03","2027-01-04"],
+ unit:["2027-01-05","2027-01-09"],integ:["2027-01-10","2027-01-11"],clean:["2027-01-12","2027-01-14"],
+ redis:["2027-02-01","2027-02-04"],cache:["2027-02-05","2027-02-07"],httpc:["2027-02-08","2027-02-08"],load:["2027-02-09","2027-02-10"],
+ jobs:["2027-02-11","2027-02-14"],mq:["2027-02-15","2027-02-18"],kafka:["2027-02-19","2027-02-20"],ws:["2027-02-21","2027-02-21"],
+ docker:["2027-02-22","2027-02-26"],compose:["2027-02-27","2027-02-28"],ci:["2027-03-01","2027-03-03"],cloud:["2027-03-04","2027-03-08"],nginx:["2027-03-09","2027-03-09"],k8s:["2027-03-10","2027-03-10"],
+ log:["2027-03-11","2027-03-12"],health:["2027-03-13","2027-03-13"],metrics:["2027-03-14","2027-03-15"],trace:["2027-03-16","2027-03-17"],
+ scale:["2027-04-01","2027-04-04"],lb:["2027-04-05","2027-04-06"],repl:["2027-04-07","2027-04-11"],cap:["2027-04-12","2027-04-13"],rate:["2027-04-14","2027-04-17"],micro:["2027-04-18","2027-04-19"],sdi:["2027-04-20","2027-04-30"]
+};
+const MILE=[["Project 1","2027-01-15","2027-01-31"],["Project 2","2027-03-18","2027-03-31"],["Project 3","2027-05-01","2027-05-31"]];
+const pd=x=>{const[a,b,c]=x.split("-").map(Number);return new Date(a,b-1,c);};
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fd=d=>MON[d.getMonth()]+" "+d.getDate();
+function fr(a,b,yr){const A=pd(a),B=pd(b);let s;
+ if(a===b)s=fd(A);else if(A.getMonth()===B.getMonth()&&A.getFullYear()===B.getFullYear())s=fd(A)+"–"+B.getDate();else s=fd(A)+" – "+fd(B);
+ return yr?s+", "+B.getFullYear():s;}
+const TODAY=(()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());})();
 const KEY="be-roadmap-done-v1";
 let done={};
 try{done=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){done={};}
@@ -669,12 +702,15 @@ DATA.forEach((g,gi)=>{
   const row=document.createElement("section");
   row.className="row"+(gi===0?" first":"")+(gi===DATA.length-1?" last":"")+(g.kind==="par"?" par":"");
   if(g.kind==="mile"){
-    row.innerHTML=`<div class="milestone"><h2>${esc(g.title)}</h2><p>${esc(g.text)}</p><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`;
+    const ms=MILE.find(m=>g.title.includes(m[0]));
+    row.innerHTML=`<div class="milestone"><h2>${esc(g.title)}</h2>${ms?`<p class="mdate">Build ${fr(ms[1],ms[2],true)}</p>`:""}<p>${esc(g.text)}</p><ul>${g.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`;
     map.appendChild(row);return;
   }
+  if(g.kind!=="par"){const st=g.topics.map(t=>SCHED[t.id][0]).sort()[0],en=g.topics.map(t=>SCHED[t.id][1]).sort().pop();g.when=fr(st,en,true);}
+  else g.when="Ongoing: Oct 2026 – Jun 2027";
   const L=[],Rt=[];
   g.topics.forEach((t,i)=>{byId[t.id]={...t,group:g.title};(i%2===0?L:Rt).push(t);});
-  const nodeHTML=t=>`<button class="node d-${t.d}" data-id="${t.id}" type="button"><span class="dot" title="${depthName[t.d]}"></span><span class="t">${esc(t.t)}</span><span class="chk" aria-hidden="true"></span></button>`;
+  const nodeHTML=t=>`<button class="node d-${t.d}" data-id="${t.id}" type="button"><span class="dot" title="${depthName[t.d]}"></span><span class="t">${esc(t.t)}<span class="dt">${fr(SCHED[t.id][0],SCHED[t.id][1])}</span></span><span class="chk" aria-hidden="true"></span></button>`;
   row.innerHTML=`<div class="cluster left">${L.map(nodeHTML).join("")}</div>
   <div class="gbox ${L.length?"has-l":""} ${Rt.length?"has-r":""}"><h2>${esc(g.title)}</h2><span class="when">${esc(g.when)}</span>${g.note?`<span class="gnote">${esc(g.note)}</span>`:""}</div>
   <div class="cluster right">${Rt.map(nodeHTML).join("")}</div>`;
@@ -683,14 +719,21 @@ DATA.forEach((g,gi)=>{
 
 const total=Object.keys(byId).length;
 function refresh(){
-  let n=0;
+  let n=0,exp=0,late=0,next=null;
   document.querySelectorAll(".node").forEach(b=>{
-    const on=!!done[b.dataset.id]; if(on)n++;
+    const id=b.dataset.id,on=!!done[id]; if(on)n++;
+    const [a,e]=SCHED[id].map(pd);
+    if(e<TODAY)exp++;
+    const isLate=!on&&e<TODAY,isNow=!on&&a<=TODAY&&TODAY<=e;
+    if(isLate)late++;
+    if(!on&&id!=="dsa"&&(!next||SCHED[id][1]<SCHED[next][1]))next=id;
+    b.classList.toggle("is-late",isLate);b.classList.toggle("is-now",isNow);
     b.classList.toggle("is-done",on);
     b.querySelector(".chk").textContent=on?"✓":"";
     b.setAttribute("aria-label",byId[b.dataset.id].t+(on?" (done)":""));
   });
   document.getElementById("pcount").textContent=`${n} of ${total} done`;
+  document.getElementById("psched").innerHTML=`Planned by today: ${exp}`+(late?` · <b class="late">${late} behind</b>`:" · on track")+(next?` · Next due: ${esc(byId[next].t)} (${fd(pd(SCHED[next][1]))})`:"");
   document.getElementById("pbar").style.width=(n/total*100)+"%";
 }
 
@@ -706,7 +749,7 @@ function open(id){
   const t=byId[id];lastFocus=document.activeElement;
   document.getElementById("ptitle").textContent=t.t;
   const on=!!done[id];
-  pbody.innerHTML=`<div class="meta"><span class="badge d-${t.d}"><span class="dot"></span>${depthName[t.d]}</span><span class="badge">${esc(t.group)}</span></div>
+  pbody.innerHTML=`<div class="meta"><span class="badge d-${t.d}"><span class="dot"></span>${depthName[t.d]}</span><span class="badge">${esc(t.group)}</span><span class="badge">📅 ${fr(SCHED[id][0],SCHED[id][1],true)}</span></div>
   <p>${esc(t.why)}</p>
   <h4>This topic covers</h4>
   <ul class="covers">${t.covers.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>
